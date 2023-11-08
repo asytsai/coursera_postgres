@@ -12,3 +12,11 @@
 
 ### Text in databases.
  
+Generating text. 
+
+```
+
+CREATE TABLE bigtext(content TEXT);
+
+iINSERT INTO bigtext(content) SELECT 'This is record number ' || i::text ||' of quite a few text records.' FROM generate_series(100000, 200000) AS t(i);
+```
