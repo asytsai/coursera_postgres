@@ -66,3 +66,21 @@ Insert these values into table holding inverted index:
 ```
 INSERT INTO invert01 (keyword, doc_id) SELECT DISTINCT s.kwd as kwd, id  FROM docs01 as D, unnest(string_to_array(lower(D.doc), ' ')) s(kwd) ORDER BY id;
 ```
+
+
+### Building an inverted index with Postgres functions
+
+Index types:
+
+1. **GIN**: generalized inverted index (insert is more expensive)
+
+2. **GIST**: generalized search tree (query is more expensive)
+
+```
+CREATE INDEX array03 ON docs03 USING gin(string_to_array(lower(docs03.doc), ' ') array_ops);
+
+EXPLAIN SELECT id, doc FROM docs03 WHERE '{interpreter}' <@ string_to_array(lower(doc), ' ');
+```
+
+If EXPLAIN SELECT displays ```seq scan```, index is not working. If it displays 
+```Bitmap Heap Scan```, the index is being used.
