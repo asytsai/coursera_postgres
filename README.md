@@ -85,7 +85,7 @@ EXPLAIN SELECT id, doc FROM docs03 WHERE '{interpreter}' <@ string_to_array(lowe
 If EXPLAIN SELECT displays ```seq scan```, index is not working. If it displays 
 ```Bitmap Heap Scan```, the index is being used.
 
-#### Build GIN index using **to_tsvector**:
+#### Build GIN index using **to_tsvector**  to build a natural language full-text index on that column:
 
 ```
 CREATE INDEX fulltext03 ON docs03 USING gin(to_tsvector('english', doc));
